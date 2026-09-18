@@ -8,10 +8,51 @@ const {
   deleteService,
 } = require("../controllers/serviceController");
 
+const Service = require("../models/Service");
+
 const router = express.Router();
 
 // Get all services
-router.get("/", getServices);
+router.get("/", async (req, res) => {
+  try {
+    let services = await Service.find().sort({ createdAt: 1 });
+
+    // Create default services if none exist
+    if (services.length === 0) {
+      const defaultServices = [
+        {
+          name: "Black & White Printing",
+          type: "Printing",
+          ratePerPage: 5,
+          status: "Available",
+        },
+        {
+          name: "Colour Printing",
+          type: "Colour Printing",
+          ratePerPage: 10,
+          status: "Available",
+        },
+        {
+          name: "Xerox",
+          type: "Xerox",
+          ratePerPage: 2,
+          status: "Available",
+        },
+      ];
+
+      services = await Service.insertMany(defaultServices);
+    }
+
+    res.json(services);
+  } catch (error) {
+    console.error("Get services error:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch services",
+      error: error.message,
+    });
+  }
+});
 
 // Get one service
 router.get("/:id", getService);
