@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE =
+  "https://cyber-cafe-management-system-996e.onrender.com/api";
 
 function Services() {
   const [services, setServices] = useState([]);
@@ -16,6 +17,8 @@ function Services() {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
+
       const [
         servicesResponse,
         customersResponse,
@@ -58,7 +61,9 @@ function Services() {
   }, []);
 
   const availableServices = services.filter(
-    (service) => service.status === "Available"
+    (service) =>
+      service.status === "Available" ||
+      service.status === "available"
   );
 
   const selectedService = services.find(
@@ -67,7 +72,7 @@ function Services() {
 
   const estimatedAmount =
     selectedService && pages
-      ? Number(pages) * Number(selectedService.ratePerPage)
+      ? Number(pages) * Number(selectedService.ratePerPage || 0)
       : 0;
 
   const totalRevenue = usages.reduce(
@@ -233,7 +238,6 @@ function Services() {
   return (
     <div className="container-fluid py-4">
 
-      {/* Header */}
       <div className="mb-4">
         <h2 className="fw-bold">
           Services & Service Usage
@@ -321,8 +325,9 @@ function Services() {
 
                   <h5>
                     ₹{Number(
-                      service.ratePerPage
+                      service.ratePerPage || 0
                     ).toFixed(2)}
+
                     <small className="text-muted">
                       {" "}
                       / page
@@ -371,7 +376,6 @@ function Services() {
 
             <div className="row g-3">
 
-              {/* Customer */}
               <div className="col-md-4">
 
                 <label className="form-label fw-semibold">
@@ -401,7 +405,6 @@ function Services() {
 
               </div>
 
-              {/* Service */}
               <div className="col-md-4">
 
                 <label className="form-label fw-semibold">
@@ -432,7 +435,6 @@ function Services() {
 
               </div>
 
-              {/* Pages */}
               <div className="col-md-2">
 
                 <label className="form-label fw-semibold">
@@ -452,7 +454,6 @@ function Services() {
 
               </div>
 
-              {/* Amount */}
               <div className="col-md-2">
 
                 <label className="form-label fw-semibold">
@@ -544,66 +545,62 @@ function Services() {
 
                 <tbody>
 
-                  {usages.map(
-                    (usage, index) => (
+                  {usages.map((usage, index) => (
 
-                      <tr key={usage._id}>
+                    <tr key={usage._id}>
 
-                        <td>
-                          {index + 1}
-                        </td>
+                      <td>
+                        {index + 1}
+                      </td>
 
-                        <td className="fw-semibold">
-                          {getCustomerName(usage)}
-                        </td>
+                      <td className="fw-semibold">
+                        {getCustomerName(usage)}
+                      </td>
 
-                        <td>
-                          {getServiceName(usage)}
-                        </td>
+                      <td>
+                        {getServiceName(usage)}
+                      </td>
 
-                        <td>
-                          {usage.pages}
-                        </td>
+                      <td>
+                        {usage.pages}
+                      </td>
 
-                        <td>
-                          ₹
-                          {Number(
-                            usage.ratePerPage || 0
-                          ).toFixed(2)}
-                        </td>
+                      <td>
+                        ₹
+                        {Number(
+                          usage.ratePerPage || 0
+                        ).toFixed(2)}
+                      </td>
 
-                        <td className="fw-semibold">
-                          ₹
-                          {Number(
-                            usage.totalAmount || 0
-                          ).toFixed(2)}
-                        </td>
+                      <td className="fw-semibold">
+                        ₹
+                        {Number(
+                          usage.totalAmount || 0
+                        ).toFixed(2)}
+                      </td>
 
-                        <td>
-                          {formatDate(
-                            usage.createdAt
-                          )}
-                        </td>
+                      <td>
+                        {formatDate(
+                          usage.createdAt
+                        )}
+                      </td>
 
-                        <td>
+                      <td>
 
-                          <button
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() =>
-                              handleDelete(
-                                usage._id
-                              )
-                            }
-                          >
-                            Delete
-                          </button>
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() =>
+                            handleDelete(usage._id)
+                          }
+                        >
+                          Delete
+                        </button>
 
-                        </td>
+                      </td>
 
-                      </tr>
+                    </tr>
 
-                    )
-                  )}
+                  ))}
 
                 </tbody>
 
