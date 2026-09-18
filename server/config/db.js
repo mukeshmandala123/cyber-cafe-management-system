@@ -2,11 +2,26 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
+    const mongoURI = process.env.MONGO_URI;
 
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    if (!mongoURI) {
+      throw new Error("MONGO_URI is not defined");
+    }
+
+    if (
+      !mongoURI.startsWith("mongodb://") &&
+      !mongoURI.startsWith("mongodb+srv://")
+    ) {
+      throw new Error(
+        'Invalid MONGO_URI. It must start with "mongodb://" or "mongodb+srv://"'
+      );
+    }
+
+    await mongoose.connect(mongoURI);
+
+    console.log("MongoDB Connected Successfully");
   } catch (error) {
-    console.error(`MongoDB Connection Error: ${error.message}`);
+    console.error("MongoDB Connection Error:", error.message);
     process.exit(1);
   }
 };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000/api/customers";
+const API_URL =
+  "https://cyber-cafe-management-system-996e.onrender.com/api/customers";
 
 function Customers() {
   const [customers, setCustomers] = useState([]);
@@ -15,6 +16,8 @@ function Customers() {
 
   const fetchCustomers = async () => {
     try {
+      setLoading(true);
+
       const response = await fetch(API_URL);
 
       if (!response.ok) {
@@ -84,6 +87,7 @@ function Customers() {
       });
 
       setEditingId(null);
+
       fetchCustomers();
     } catch (error) {
       console.error("Error saving customer:", error);
@@ -159,7 +163,6 @@ function Customers() {
         </div>
       </div>
 
-      {/* Customer Form */}
       <div className="card shadow-sm mb-4">
         <div className="card-header bg-primary text-white">
           <h5 className="mb-0">
@@ -240,7 +243,6 @@ function Customers() {
         </div>
       </div>
 
-      {/* Customer List */}
       <div className="card shadow-sm">
         <div className="card-header">
           <h5 className="mb-0">Customer List</h5>
@@ -254,11 +256,14 @@ function Customers() {
                 role="status"
               ></div>
 
-              <p className="mt-2 mb-0">Loading customers...</p>
+              <p className="mt-2 mb-0">
+                Loading customers...
+              </p>
             </div>
           ) : customers.length === 0 ? (
             <div className="text-center py-5">
               <h5>No customers found</h5>
+
               <p className="text-muted">
                 Add your first customer using the form above.
               </p>
