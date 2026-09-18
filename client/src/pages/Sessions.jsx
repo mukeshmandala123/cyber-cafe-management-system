@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE =
+  "https://cyber-cafe-management-system-996e.onrender.com/api";
 
 const RATE_PER_HOUR = 20;
 
@@ -17,6 +18,8 @@ function Sessions() {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
+
       const [
         customersResponse,
         terminalsResponse,
@@ -260,7 +263,6 @@ function Sessions() {
   return (
     <div className="container-fluid py-4">
 
-      {/* Header */}
       <div className="mb-4">
         <h2 className="fw-bold">
           Session Management
@@ -271,7 +273,6 @@ function Sessions() {
         </p>
       </div>
 
-      {/* Summary Cards */}
       <div className="row g-4 mb-4">
 
         <div className="col-md-6 col-lg-3">
@@ -332,7 +333,6 @@ function Sessions() {
 
       </div>
 
-      {/* Start Session */}
       <div className="card shadow-sm mb-4">
 
         <div className="card-header bg-primary text-white">
@@ -447,7 +447,6 @@ function Sessions() {
         </div>
       </div>
 
-      {/* Active Sessions */}
       <div className="card shadow-sm mb-4">
 
         <div className="card-header">
@@ -541,7 +540,6 @@ function Sessions() {
         </div>
       </div>
 
-      {/* Session History */}
       <div className="card shadow-sm">
 
         <div className="card-header">
