@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+const API_URL =
+  "https://cyber-cafe-management-system-996e.onrender.com/api/terminals";
+
 function Terminals() {
   const [terminals, setTerminals] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,12 +15,18 @@ function Terminals() {
     try {
       setLoading(true);
 
-      const response = await fetch("http://localhost:5000/api/terminals");
+      const response = await fetch(API_URL);
+
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch terminals");
+      }
 
       setTerminals(data);
     } catch (error) {
       console.error("Error fetching terminals:", error);
+      alert("Unable to load terminals.");
     } finally {
       setLoading(false);
     }
@@ -36,20 +45,17 @@ function Terminals() {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/terminals",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            terminalNumber: Number(terminalNumber),
-            type: terminalType,
-            ratePerHour: Number(ratePerHour),
-          }),
-        }
-      );
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          terminalNumber: Number(terminalNumber),
+          type: terminalType,
+          ratePerHour: Number(ratePerHour),
+        }),
+      });
 
       const data = await response.json();
 
@@ -171,17 +177,9 @@ function Terminals() {
                   {terminals.map((terminal, index) => (
                     <tr key={terminal._id || index}>
                       <td>{index + 1}</td>
-
-                      <td>
-                        {terminal.terminalNumber}
-                      </td>
-
+                      <td>{terminal.terminalNumber}</td>
                       <td>{terminal.type}</td>
-
-                      <td>
-                        ₹{terminal.ratePerHour}
-                      </td>
-
+                      <td>₹{terminal.ratePerHour}</td>
                       <td>
                         <span
                           className={`badge ${
