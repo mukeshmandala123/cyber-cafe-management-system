@@ -1,69 +1,45 @@
-const express = require("express");
+const mongoose = require("mongoose");
 
-const {
-  getServices,
-  getService,
-  createService,
-  updateService,
-  deleteService,
-} = require("../controllers/serviceController");
+const serviceSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      enum: [
+        "Black & White Printing",
+        "Colour Printing",
+        "Xerox",
+      ],
+      required: true,
+    },
 
-const Service = require("../models/Service");
+    type: {
+      type: String,
+      enum: [
+        "Printing",
+        "Xerox",
+      ],
+      required: true,
+    },
 
-const router = express.Router();
+    ratePerPage: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
 
-// Get all services
-router.get("/", async (req, res) => {
-  try {
-    let services = await Service.find().sort({ createdAt: 1 });
-
-    // Create default services if database is empty
-    if (services.length === 0) {
-      const defaultServices = [
-        {
-          name: "Plain Printer",
-          type: "Printer",
-          ratePerPage: 5,
-          status: "Available",
-        },
-        {
-          name: "Colour Printer",
-          type: "Printer",
-          ratePerPage: 10,
-          status: "Available",
-        },
-        {
-          name: "Xerox",
-          type: "Xerox",
-          ratePerPage: 2,
-          status: "Available",
-        },
-      ];
-
-      services = await Service.insertMany(defaultServices);
-    }
-
-    res.json(services);
-  } catch (error) {
-    console.error("Get services error:", error);
-
-    res.status(500).json({
-      message: "Failed to fetch services",
-      error: error.message,
-    });
+    status: {
+      type: String,
+      enum: [
+        "Available",
+        "Unavailable",
+        "Maintenance",
+      ],
+      default: "Available",
+    },
+  },
+  {
+    timestamps: true,
   }
-});
+);
 
-// Get one service
-router.get("/:id", getService);
-
-// Create service
-router.post("/", createService);
-
-// Update service
-router.put("/:id", updateService);
-
-// Delete service
-router.delete("/:id", deleteService);
-
-module.exports = router;
+module.exports = mongoose.model("Service", serviceSchema);
