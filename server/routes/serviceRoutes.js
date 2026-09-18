@@ -17,18 +17,17 @@ router.get("/", async (req, res) => {
   try {
     let services = await Service.find().sort({ createdAt: 1 });
 
-    // Create default services if none exist
     if (services.length === 0) {
       const defaultServices = [
         {
-          name: "Black & White Printing",
-          type: "Printing",
+          name: "Plain Printer",
+          type: "Printer",
           ratePerPage: 5,
           status: "Available",
         },
         {
-          name: "Colour Printing",
-          type: "Colour Printing",
+          name: "Colour Printer",
+          type: "Printer",
           ratePerPage: 10,
           status: "Available",
         },
