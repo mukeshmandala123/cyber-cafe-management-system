@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE =
+  "https://cyber-cafe-management-system-996e.onrender.com/api";
 
 function Billing() {
   const [customers, setCustomers] = useState([]);
@@ -13,6 +14,8 @@ function Billing() {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
+
       const [
         customersResponse,
         sessionsResponse,
@@ -204,7 +207,6 @@ function Billing() {
 
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-4">
-
         <div>
           <h2 className="fw-bold">
             Final Billing
@@ -214,7 +216,6 @@ function Billing() {
             Combine computer session and service charges.
           </p>
         </div>
-
       </div>
 
       {/* Customer Selection */}
@@ -590,6 +591,7 @@ function Billing() {
                 <div className="card-body">
 
                   <div className="d-flex justify-content-between mb-2">
+
                     <span>
                       Computer Sessions
                     </span>
@@ -597,9 +599,11 @@ function Billing() {
                     <span>
                       ₹{sessionTotal.toFixed(2)}
                     </span>
+
                   </div>
 
                   <div className="d-flex justify-content-between mb-3">
+
                     <span>
                       Services
                     </span>
@@ -607,6 +611,7 @@ function Billing() {
                     <span>
                       ₹{serviceTotal.toFixed(2)}
                     </span>
+
                   </div>
 
                   <hr />
