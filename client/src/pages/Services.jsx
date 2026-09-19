@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE =
+  "https://cyber-cafe-management-system-996e.onrender.com/api";
 
 function Services() {
   const [services, setServices] = useState([]);
@@ -33,11 +34,15 @@ function Services() {
 
       const data = await response.json();
 
-      console.log("Services API response:", data);
+      console.log(
+        "Services API response:",
+        data
+      );
 
       if (!response.ok) {
         throw new Error(
-          data.message || "Failed to fetch services"
+          data.message ||
+            "Failed to fetch services"
         );
       }
 
@@ -65,15 +70,23 @@ function Services() {
   // =========================
   const fetchCustomers = async () => {
     try {
+      console.log("Fetching customers...");
+
       const response = await fetch(
         `${API_BASE}/customers`
       );
 
       const data = await response.json();
 
+      console.log(
+        "Customers API response:",
+        data
+      );
+
       if (!response.ok) {
         throw new Error(
-          data.message || "Failed to fetch customers"
+          data.message ||
+            "Failed to fetch customers"
         );
       }
 
@@ -186,12 +199,16 @@ function Services() {
     e.preventDefault();
 
     if (!customerId) {
-      alert("Please select a customer.");
+      alert(
+        "Please select a customer."
+      );
       return;
     }
 
     if (!serviceId) {
-      alert("Please select a service.");
+      alert(
+        "Please select a service."
+      );
       return;
     }
 
@@ -212,10 +229,12 @@ function Services() {
         `${API_BASE}/service-usage`,
         {
           method: "POST",
+
           headers: {
             "Content-Type":
               "application/json",
           },
+
           body: JSON.stringify({
             customer: customerId,
             service: serviceId,
@@ -433,6 +452,7 @@ function Services() {
         <div className="col-md-4">
           <div className="card shadow-sm h-100">
             <div className="card-body">
+
               <h6 className="text-muted">
                 Available Services
               </h6>
@@ -440,6 +460,7 @@ function Services() {
               <h2 className="fw-bold">
                 {availableServices.length}
               </h2>
+
             </div>
           </div>
         </div>
@@ -447,6 +468,7 @@ function Services() {
         <div className="col-md-4">
           <div className="card shadow-sm h-100">
             <div className="card-body">
+
               <h6 className="text-muted">
                 Usage Records
               </h6>
@@ -454,6 +476,7 @@ function Services() {
               <h2 className="fw-bold">
                 {usages.length}
               </h2>
+
             </div>
           </div>
         </div>
@@ -461,6 +484,7 @@ function Services() {
         <div className="col-md-4">
           <div className="card shadow-sm h-100">
             <div className="card-body">
+
               <h6 className="text-muted">
                 Service Revenue
               </h6>
@@ -468,6 +492,7 @@ function Services() {
               <h2 className="fw-bold">
                 ₹{totalRevenue.toFixed(2)}
               </h2>
+
             </div>
           </div>
         </div>
@@ -486,10 +511,13 @@ function Services() {
         <div className="card-body">
 
           {services.length === 0 ? (
+
             <div className="alert alert-warning mb-0">
               No services configured.
             </div>
+
           ) : (
+
             <div className="row g-3">
 
               {services.map(
@@ -539,6 +567,7 @@ function Services() {
               )}
 
             </div>
+
           )}
 
         </div>
@@ -726,6 +755,7 @@ function Services() {
         <div className="card-body p-0">
 
           {usages.length === 0 ? (
+
             <div className="text-center py-5">
 
               <h5>
@@ -738,7 +768,9 @@ function Services() {
               </p>
 
             </div>
+
           ) : (
+
             <div className="table-responsive">
 
               <table className="table table-hover align-middle mb-0">
@@ -765,6 +797,7 @@ function Services() {
                       usage,
                       index
                     ) => (
+
                       <tr
                         key={
                           usage._id
@@ -829,6 +862,7 @@ function Services() {
                         </td>
 
                       </tr>
+
                     )
                   )}
 
@@ -837,6 +871,7 @@ function Services() {
               </table>
 
             </div>
+
           )}
 
         </div>
